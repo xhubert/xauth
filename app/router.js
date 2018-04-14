@@ -12,5 +12,10 @@ module.exports = app => {
   // Tutorials
   router.resources('topic', '/api/v2/topics', 'topicCtrl');
 
-  router.post(`/api/${version}/localauth`, 'localAuthCtrl.create');
+  /**
+   * The res of LocalAuth.
+   */
+  router.resources('localauth', `/api/${version}/localauth`, 'localAuthCtrl');
+  router.patch(`/api/${version}/localauth/editusername/:uuid`, 'localAuthCtrl.editUserName');
+  router.patch(`/api/${version}/localauth/editpassword/:uuid`, 'localAuthCtrl.editPassword');
 };

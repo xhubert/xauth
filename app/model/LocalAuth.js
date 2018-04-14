@@ -22,7 +22,16 @@ module.exports = app => {
       unique: true,
       comments: '用户ID，UUID。',
     },
-    username: { type: STRING(32), allowNull: false, unique: true, comments: '用户帐号。' },
+    username: {
+      type: STRING(32),
+      allowNull: false,
+      unique: {
+        args: true,
+        msg: 'Oops. Looks like you already have an account with this username. Please try to login.',
+        fields: [ 'username' ],
+      },
+      comments: '用户帐号。',
+    },
     password: {
       type: CHAR(32),
       allowNull: false,
@@ -34,8 +43,13 @@ module.exports = app => {
     },
     status: {
       type: TINYINT,
-      allowNull: false,
-      defaultValue: 1,
+      // allowNull: false,
+      // defaultValue: 1,
+      allowNull: {
+        args: false,
+        msg: 'status cannot be null.',
+        fields: [ 'status' ],
+      },
       comment: '是否正常状态，正常状态才可以登录。1: 正常；0: 不可用；',
     },
     // Timestamps
