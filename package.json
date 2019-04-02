@@ -47,8 +47,7 @@
     "migrate:up": "sequelize db:migrate",
     "migrate:down": "sequelize db:migrate:undo",
     "migrate:seed": "sequelize db:seed:all",
-    "migrate:seed-undo": "sequelize db:seed:undo:all",
-    "heroku-postbuild": "npm run build"
+    "migrate:seed-undo": "sequelize db:seed:undo:all"
   },
   "ci": {
     "version": "8"
