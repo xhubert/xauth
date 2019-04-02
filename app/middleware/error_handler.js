@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const sequelizeErrors = [
   'SequelizeBaseError',
@@ -23,22 +23,22 @@ const sequelizeErrors = [
   'SequelizeEagerLoadingError',
   'SequelizeAssociationError',
   'SequelizeQueryError',
-  'SequelizeBulkRecordError',
-];
+  'SequelizeBulkRecordError'
+]
 
-const svrErrMsg = 'Internal Server Error';
+const svrErrMsg = 'Internal Server Error'
 
 module.exports = (option, app) => {
   return async (ctx, next) => {
     try {
-      await next();
+      await next()
     } catch (err) {
       // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
       if (app.config.env === 'prod') {
-        app.emit('error', err, ctx);
+        app.emit('error', err, ctx)
       }
 
-      const error = {};
+      const error = {}
 
       if (!err.status && sequelizeErrors.includes(err.name)) {
         // 针对Sequelize异常的特殊处理
@@ -46,35 +46,35 @@ module.exports = (option, app) => {
         switch (err.name) {
           case 'SequelizeValidationError':
           case 'SequelizeUniqueConstraintError':
-            error.status = 422;
-            break;
+            error.status = 422
+            break
           case 'SequelizeTimeoutError':
-            error.status = 408;
-            break;
+            error.status = 408
+            break
           case 'SequelizeConnectionError':
           case 'SequelizeConnectionRefusedError':
           case 'SequelizeAccessDeniedError':
-            error.status = 406;
-            break;
+            error.status = 406
+            break
           default:
-            break;
+            break
         }
       } else {
-        error.status = err.status || 500;
+        error.status = err.status || 500
       }
 
       // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息。
       if (error.status === 500 && app.config.env === 'prod') {
-        error.msg = svrErrMsg;
+        error.msg = svrErrMsg
       } else {
-        error.msg = err.message || 'Unknown error!';
+        error.msg = err.message || 'Unknown error!'
       }
       // 从 error 对象上读出各个属性，设置到响应中。
-      ctx.body = { error };
+      ctx.body = { error }
       if (error.status === 422) {
-        ctx.body.detail = err.errors;
+        ctx.body.detail = err.errors
       }
-      ctx.status = error.status;
+      ctx.status = error.status
     }
-  };
-};
+  }
+}

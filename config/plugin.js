@@ -1,18 +1,18 @@
 'use strict';
 
-// had enabled by egg
-// exports.static = true;
-exports.sequelize = {
+/** @type Egg.EggPlugin */
+
+exports.routerPlus = {
   enable: true,
-  package: 'egg-sequelize',
-};
+  package: 'egg-router-plus'
+}
+
+// exports.sequelize = {
+//   enable: true,
+//   package: 'egg-sequelize',
+// };
 
 exports.validate = {
   enable: true,
   package: 'egg-validate',
-};
-
-exports.cors = {
-  enable: true,
-  package: 'egg-cors',
 };
