@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -12,10 +12,10 @@ module.exports = appInfo => {
    * @type {Egg.EggAppConfig}
    **/
 
-   const config = {}
+  const config = {}
 
-   config.version = appInfo.pkg.version
-   // use for cookie sign key, should change to your own and keep security
+  config.version = appInfo.pkg.version
+  // use for cookie sign key, should change to your own and keep security
   config.keys = `${appInfo.name}_1523199498375_4694`
   config.secrets = `${appInfo.name}_secrets`
 
@@ -28,16 +28,16 @@ module.exports = appInfo => {
   // config.sequelize = dbconf.development;
 
   // add your middleware config here
-  config.middleware = [ 'errorHandler' ];
+  config.middleware = [ 'errorHandler' ]
   config.cors = {
-    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
-  };
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS'
+  }
 
   config.security = {
     domainWhiteList: [ 'http://127.0.0.1', 'http://localhost' ],
     csrf: {
       cookieName: 'XSRF-TOKEN', // same to the default of axios.
-      headerName: 'X-XSRF-TOKEN',
+      headerName: 'X-XSRF-TOKEN'
       // ipBlackList: [
       //   '10.0.0.0/8', // 支持 IP 网段
       //   '0.0.0.0/32',
@@ -72,4 +72,4 @@ module.exports = appInfo => {
     ...config,
     ...userConfig
   }
-};
+}
