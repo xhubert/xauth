@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = app => {
   const backendRouter = app.router.namespace('/api')
   const { controller, middlewares } = app

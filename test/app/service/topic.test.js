@@ -1,18 +1,16 @@
-'use strict';
-
-const assert = require('assert');
-const mock = require('egg-mock');
+const assert = require('assert')
+const mock = require('egg-mock')
 
 describe('test/app/service/topic.test.js', () => {
-  let app;
-  let ctx;
+  let app
+  let ctx
   before(async function() {
-    app = mock.app();
-    await app.ready();
-    ctx = app.mockContext();
-  });
+    app = mock.app()
+    await app.ready()
+    ctx = app.mockContext()
+  })
 
-  afterEach(mock.restore);
+  afterEach(mock.restore)
 
   describe('show()', () => {
     it('should with render success', async function() {
@@ -21,19 +19,19 @@ describe('test/app/service/topic.test.js', () => {
           success: true,
           data: {
             content: '<div class="markdown-text">Super Mock Content</div>',
-            replies: [],
-          },
-        },
-      });
+            replies: []
+          }
+        }
+      })
       const topic = await ctx.service.topic.show({
         id: '57ea257b3670ca3f44c5beb6',
-        mdrender: true,
-      });
-      assert(topic);
-      assert(typeof topic.content === 'string');
-      assert(topic.content.indexOf('<div class="markdown-text">') >= 0);
-      assert(Array.isArray(topic.replies));
-    });
+        mdrender: true
+      })
+      assert(topic)
+      assert(typeof topic.content === 'string')
+      assert(topic.content.indexOf('<div class="markdown-text">') >= 0)
+      assert(Array.isArray(topic.replies))
+    })
 
     it('should without render success', async function() {
       app.mockHttpclient(`${ctx.service.topic.root}/topic/57ea257b3670ca3f44c5beb6`, 'GET', {
@@ -41,40 +39,40 @@ describe('test/app/service/topic.test.js', () => {
           success: true,
           data: {
             content: 'Super Mock Content',
-            replies: [],
-          },
-        },
-      });
+            replies: []
+          }
+        }
+      })
       const topic = await ctx.service.topic.show({
         id: '57ea257b3670ca3f44c5beb6',
-        mdrender: false,
-      });
-      assert(topic);
-      assert(typeof topic.content === 'string');
-      assert(topic.content.indexOf('<div class="markdown-text">') === -1);
-      assert(Array.isArray(topic.replies));
-    });
+        mdrender: false
+      })
+      assert(topic)
+      assert(typeof topic.content === 'string')
+      assert(topic.content.indexOf('<div class="markdown-text">') === -1)
+      assert(Array.isArray(topic.replies))
+    })
 
     it('should response 404 when topic id not exist', async function() {
       app.mockHttpclient(`${ctx.service.topic.root}/topics/5433d5e4e737cbe96dcef300`, 'GET', {
         status: 404,
         data: {
-          error_msg: '话题不存在',
-        },
-      });
+          error_msg: '话题不存在'
+        }
+      })
 
       try {
         await ctx.service.topic.show({
           id: '5433d5e4e737cbe96dcef300',
-          mdrender: false,
-        });
-        throw new Error('should not excute');
+          mdrender: false
+        })
+        throw new Error('should not excute')
       } catch (err) {
-        assert(err.status === 404);
-        assert(err.message === '话题不存在');
+        assert(err.status === 404)
+        assert(err.message === '话题不存在')
       }
-    });
-  });
+    })
+  })
 
   describe('list()', () => {
     it('should with render, limit and tab success', async function() {
@@ -83,97 +81,97 @@ describe('test/app/service/topic.test.js', () => {
           success: true,
           data: [
             {
-              content: '<div class="markdown-text">mock content</div>',
+              content: '<div class="markdown-text">mock content</div>'
             },
-            {}, {}, {}, {},
-          ],
-        },
-      });
+            {}, {}, {}, {}
+          ]
+        }
+      })
 
       const topics = await ctx.service.topic.list({
         mdrender: true,
         limit: 5,
-        tab: 'share',
-      });
-      assert(topics);
-      assert(topics.length === 5);
-      assert(typeof topics[0].content === 'string');
-      assert(topics[0].content.indexOf('<div class="markdown-text">') >= 0);
-    });
-  });
+        tab: 'share'
+      })
+      assert(topics)
+      assert(topics.length === 5)
+      assert(typeof topics[0].content === 'string')
+      assert(topics[0].content.indexOf('<div class="markdown-text">') >= 0)
+    })
+  })
 
   describe('create()', () => {
     it('should create failed by accesstoken error', async function() {
       app.mockHttpclient(`${ctx.service.topic.root}/topics`, 'POST', {
         status: 401,
         data: {
-          error_msg: '错误的accessToken',
-        },
-      });
+          error_msg: '错误的accessToken'
+        }
+      })
 
       try {
         await ctx.service.topic.create({
           accesstoken: 'hello',
           title: 'title',
-          content: 'content',
-        });
+          content: 'content'
+        })
       } catch (err) {
-        assert(err.status === 401);
-        assert(err.message === '错误的accessToken');
+        assert(err.status === 401)
+        assert(err.message === '错误的accessToken')
       }
-    });
+    })
 
     it('should create success', async function() {
       app.mockHttpclient(`${ctx.service.topic.root}/topics`, 'POST', {
         data: {
           success: true,
-          topic_id: '5433d5e4e737cbe96dcef312',
-        },
-      });
+          topic_id: '5433d5e4e737cbe96dcef312'
+        }
+      })
       const id = await ctx.service.topic.create({
         accesstoken: 'hello',
         title: 'title',
-        content: 'content',
-      });
-      assert(id === '5433d5e4e737cbe96dcef312');
-    });
-  });
+        content: 'content'
+      })
+      assert(id === '5433d5e4e737cbe96dcef312')
+    })
+  })
 
   describe('update()', () => {
     it('should update failed by accesstoken error', async function() {
       app.mockHttpclient(`${ctx.service.topic.root}/topics/update`, 'POST', {
         status: 401,
         data: {
-          error_msg: '错误的accessToken',
-        },
-      });
+          error_msg: '错误的accessToken'
+        }
+      })
 
       try {
         await ctx.service.topic.update({
           id: '57ea257b3670ca3f44c5beb6',
           accesstoken: 'hello',
           title: 'title',
-          content: 'content',
-        });
+          content: 'content'
+        })
       } catch (err) {
-        assert(err.status === 401);
-        assert(err.message === '错误的accessToken');
+        assert(err.status === 401)
+        assert(err.message === '错误的accessToken')
       }
-    });
+    })
 
     it('should update success', async function() {
       app.mockHttpclient(`${ctx.service.topic.root}/topics/update`, 'POST', {
         data: {
           success: true,
-          topic_id: '5433d5e4e737cbe96dcef312',
-        },
-      });
+          topic_id: '5433d5e4e737cbe96dcef312'
+        }
+      })
       await ctx.service.topic.update({
         id: '57ea257b3670ca3f44c5beb6',
         accesstoken: 'hello',
         title: 'title',
-        content: 'content',
-      });
-    });
-  });
-});
+        content: 'content'
+      })
+    })
+  })
+})
