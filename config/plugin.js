@@ -19,3 +19,8 @@ exports.mongoose = {
   enable: true,
   package: 'egg-mongoose'
 }
+
+exports.mailer = {
+  enable: true,
+  package: 'egg-mailer'
+}

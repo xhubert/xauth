@@ -64,6 +64,16 @@ module.exports = appInfo => {
     }
   }
 
+  config.mailer = {
+    host: 'smtp.exmail.qq.com',
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: 'no-reply@cloudybaylighting.net', // generated ethereal user
+      pass: 'cblMail123#' // generated ethereal password
+    }
+  }
+
   // 请求响应code
   config.codeMap = {
     '-1': '请求失败',
@@ -91,6 +101,7 @@ module.exports = appInfo => {
   config.modelEnum = require('./enum.js').enum
 
   return {
+    inviteCode: 'cld-bay',
     ...config,
     ...userConfig
   }
