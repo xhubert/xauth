@@ -1,7 +1,7 @@
 {
   "name": "xauth",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.2",
+  "description": "xauth",
   "private": true,
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -59,6 +59,6 @@
     "type": "git",
     "url": ""
   },
-  "author": "Hubert <hubert.fan@outlook.com> (https://hitoshop.com)",
+  "author": "Hubert",
   "license": "MIT"
 }
