@@ -4,7 +4,6 @@ module.exports = app => {
   const auth = middlewares.auth(app)
 
   // User
-  userRouter.get('/users', auth, controller.user.list)
   userRouter.get('/users/:id', auth, controller.user.item)
   userRouter.post('/users', controller.user.create)
   userRouter.post('/users/identify', controller.user.identify)
