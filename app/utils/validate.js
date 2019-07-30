@@ -1,5 +1,3 @@
-'use strict'
-
 const lodash = require('lodash')
 // const mongoose = require('mongoose')
 const validator = require('validator')

@@ -1,12 +1,10 @@
-'use strict'
-
 /**
  * @description 公共的 model proxy service
  */
 
 const { Service } = require('egg')
 
-module.exports = class ProxyService extends Service {
+module.exports = class BasicService extends Service {
   init() {
     return this.model.init()
   }

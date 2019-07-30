@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * @description jwt 校验
  */
@@ -12,9 +10,9 @@ function verifyToken(app) {
   return async (ctx, next) => {
     ctx.session._verify = false
     const token = ctx.cookies.get(config.session.key, app.config.session.signed)
-    if (!token) return ctx.fail('请先登录')
+    if (!token) return ctx.fail('请先登录！')
     const verify = await app.verifyToken(token)
-    if (!verify) return ctx.fail(401, '登录失效，请重新登录')
+    if (!verify) return ctx.fail('登录失效，请重新登录！')
     ctx.session._verify = true
     ctx.session._token = token
     logger.info('Token校验成功')
@@ -27,20 +25,15 @@ module.exports = app => {
     verifyToken(app),
     async (ctx, next) => {
       if (!ctx.session._verify) {
-        return ctx.fail(401)
+        return ctx.fail('身份验证失败！')
       }
-      // const userId = ctx.cookies.get(
-      //   app.config.userCookieKey,
-      //   app.config.session.signed
-      // )
-      // const user = await ctx.service.user.getItemById(userId, '-password')
-      const user = {
-        _id: 1,
-        username: 'admin',
-        password: '123'
-      }
+      const userId = ctx.cookies.get(
+        app.config.userCookieKey,
+        app.config.session.signed
+      )
+      const user = await ctx.service.user.getItemById(userId, '-password')
       if (!user) {
-        return ctx.fail(401, '用户不存在')
+        return ctx.fail('身份验证错误，用户不存在！')
       }
       ctx.session._user = user
       ctx.session._isAuthed = true
