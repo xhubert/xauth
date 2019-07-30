@@ -45,32 +45,15 @@ module.exports = class UserController extends Controller {
     }
   }
 
-  async list() {
-    const { ctx } = this
-    let select = '-password'
-    if (!ctx.session._isAuthed) {
-      select += ' -createdAt -updatedAt -role'
-    }
-    const query = {
-      $nor: [
-        {
-          role: this.config.modelEnum.user.role.optional.ADMIN
-        }
-      ]
-    }
-    const data = await this.service.user.getListWithComments(query, select)
-    data
-      ? ctx.success(data, '用户列表获取成功')
-      : ctx.fail('用户列表获取失败')
-  }
-
   async create() {
     const { app, ctx } = this
     const body = ctx.validateBody(this.rules.create)
+    this.logger.info(body)
     const { inviteCode } = body
     if (!inviteCode || inviteCode.toLowerCase() !== app.config.inviteCode) {
       return ctx.fail('请输入正确的邀请码！')
     }
+
     const res = await this.service.user.create(body)
     if (res.success) {
       ctx.success(res.data, res.msg)

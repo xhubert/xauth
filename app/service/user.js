@@ -9,34 +9,30 @@ module.exports = class UserService extends BasicService {
     return this.app.model.User
   }
 
-  async getListWithComments(query, select) {
-    let list = await this.getList(query, select, {
-      sort: '-createdAt'
-    })
-    if (list && list.length) {
-      list = await Promise.all(
-        list.map(async item => {
-          item = item.toObject()
-          item.comments = await this.service.comment.count({
-            author: item._id
-          })
-          return item
-        })
-      )
+  /**
+     * @description 创建管理员，用于server初始化时
+     */
+  async seed() {
+    const ADMIN = this.config.modelEnum.user.role.optional.ADMIN
+    let admin = await this.service.user.getItem({ role: ADMIN })
+    if (!admin) {
+      const defaultAdmin = this.config.defaultAdmin
+      admin = await this.create(Object.assign({}, defaultAdmin, {
+        role: ADMIN
+      }))
     }
-    return list
+    // 挂载在session上
+    this.app._admin = admin
   }
 
   // 创建用户
   async create(user, checkExist = true) {
     const { username } = user
     let msg = ''
-
     if (checkExist) {
       const exist = await this.getItem({ username })
       if (exist) {
         msg = `用户名“${username}”已存在！`
-        // this.logger.info('用户已存在，无需创建：' + username)
         return {
           success: false,
           msg,
@@ -44,7 +40,6 @@ module.exports = class UserService extends BasicService {
         }
       }
     }
-
     const data = await new this.model(
       Object.assign(
         {},
@@ -55,6 +50,7 @@ module.exports = class UserService extends BasicService {
         }
       )
     ).save()
+
     const type = [ '管理员', '用户' ][data.role]
 
     if (data) {
@@ -64,10 +60,8 @@ module.exports = class UserService extends BasicService {
         msg,
         data
       }
-      // this.logger.info(`${type}创建成功：${username}`)
     }
     msg = `${type} “${username}” 创建失败！`
-    // this.logger.error(`${type}创建失败：${username}`)
     return {
       success: false,
       msg,

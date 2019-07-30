@@ -34,24 +34,6 @@ module.exports = class AuthService extends Service {
     return token
   }
 
-  /**
-     * @description 创建管理员，用于server初始化时
-     */
-  async seed() {
-    const ADMIN = this.config.modelEnum.user.role.optional.ADMIN
-    let admin = await this.service.user.getItem({ role: ADMIN })
-    if (!admin) {
-      const defaultAdmin = this.config.defaultAdmin
-      admin = await this.service.user.create(Object.assign({}, defaultAdmin, {
-        role: ADMIN,
-        password: this.app.utils.encode.bhash(defaultAdmin.password),
-        avatar: this.app.utils.gravatar(defaultAdmin.email)
-      }))
-    }
-    // 挂载在session上
-    this.app._admin = admin
-  }
-
   // 更新session
   async updateSessionUser(admin) {
     this.ctx.session._user = admin || await this.service.user.getItemById(this.ctx.session._user._id, '-password')

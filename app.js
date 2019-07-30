@@ -7,7 +7,7 @@ module.exports = app => {
   app.beforeStart(async () => {
     const ctx = app.createAnonymousContext()
     // 初始化管理员（如果有必要）
-    await ctx.service.auth.seed()
+    await ctx.service.user.seed()
   })
 }
 
