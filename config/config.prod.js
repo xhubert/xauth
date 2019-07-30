@@ -11,7 +11,7 @@ module.exports = () => {
   }
   // mongoose配置
   config.mongoose = {
-    url: 'mongodb://xauth:xauth@127.0.0.1:27017/xauth',
+    url: `mongodb://xauth:${process.env.DBPWD}@127.0.0.1:27017/xauth`,
     options: {
       useNewUrlParser: true,
       poolSize: 20,
