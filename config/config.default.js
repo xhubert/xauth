@@ -9,6 +9,14 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
+  let env
+  try {
+    env = require('../.env')
+  } catch (e) {
+    if (e.code === 'MODULE_NOT_FOUND') {
+      throw new Error('请先在项目根目录增加环境配置文件‘.env.js’。')
+    }
+  }
 
   const config = {}
 
@@ -64,15 +72,16 @@ module.exports = appInfo => {
     }
   }
 
-  config.mailer = {
-    host: 'smtp.exmail.qq.com',
-    port: 465,
-    secure: true, // true for 465, false for other ports
-    auth: {
-      user: 'no-reply@cloudybaylighting.net', // generated ethereal user
-      pass: 'cblMail123#' // generated ethereal password
-    }
-  }
+  config.mailer = env.mailer
+  // {
+  //   host: 'smtp.exmail.qq.com',
+  //   port: 465,
+  //   secure: true, // true for 465, false for other ports
+  //   auth: {
+  //     user: 'no-reply@cloudybaylighting.net', // generated ethereal user
+  //     pass: 'cblMail123#' // generated ethereal password
+  //   }
+  // }
 
   // 请求响应code
   config.codeMap = {
