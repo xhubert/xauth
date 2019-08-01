@@ -114,7 +114,7 @@ module.exports = class UserController extends Controller {
       email: body.email
     }, select)
     if (!data) {
-      return ctx.fail('请输入正确的用户名和电子邮箱！')
+      return ctx.fail('请输入正确的用户账户和电子邮箱！')
     }
     let resetpwd = await this.service.resetpwd.getItem({ userid: data._id })
     let res = {}

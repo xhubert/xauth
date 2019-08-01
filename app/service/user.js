@@ -32,7 +32,7 @@ module.exports = class UserService extends BasicService {
     if (checkExist) {
       const exist = await this.getItem({ username })
       if (exist) {
-        msg = `用户名“${username}”已存在！`
+        msg = `用户账户“${username}”已存在！`
         return {
           success: false,
           msg,
