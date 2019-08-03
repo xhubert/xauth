@@ -28,6 +28,12 @@ module.exports = class UserController extends Controller {
       update: {
         mute: { type: 'boolean', required: false }
       },
+      updateUsername: {
+        username: { type: 'string', required: true }
+      },
+      updateEmail: {
+        email: { type: 'email', required: true }
+      },
       checkAdmin: {
         userId: { type: 'objectId', required: true },
         token: { type: 'string', required: true }
@@ -41,6 +47,10 @@ module.exports = class UserController extends Controller {
         userId: { type: 'string', required: true },
         code: { type: 'string', required: true },
         password: { type: 'string', required: true, min: 6 }
+      },
+      password: {
+        password: { type: 'string', required: true, min: 6 },
+        old: { type: 'string', required: true, min: 6 }
       }
     }
   }
@@ -48,7 +58,6 @@ module.exports = class UserController extends Controller {
   async create() {
     const { app, ctx } = this
     const body = ctx.validateBody(this.rules.create)
-    this.logger.info(body)
     const { inviteCode } = body
     if (!inviteCode || inviteCode.toLowerCase() !== app.config.inviteCode) {
       return ctx.fail('请输入正确的邀请码！')
@@ -85,19 +94,27 @@ module.exports = class UserController extends Controller {
       : ctx.fail('用户更新失败')
   }
 
-  async checkAdmin() {
+  async updateUsername() {
     const { ctx } = this
-    ctx.validate(this.rules.checkAdmin, ctx.query)
-    const { userId, token } = ctx.query
-    let isAdmin = false
-    const verify = await this.app.verifyToken(token)
-    if (verify) {
-      const user = await this.service.user.getItemById(userId)
-      if (user.role === this.config.modelEnum.user.role.optional.ADMIN) {
-        isAdmin = true
-      }
+    const { id } = ctx.validateParamsObjectId()
+    const body = this.ctx.validateBody(this.rules.updateUsername)
+    const res = await this.service.user.updateUsernameOrEmailById(id, body)
+    if (res.success) {
+      ctx.success(res.data, '用户帐号更新成功！')
+    } else {
+      ctx.fail('用户帐号更新失败！')
     }
-    ctx.success(isAdmin, '校验管理员成功')
+  }
+  async updateEmail() {
+    const { ctx } = this
+    const { id } = ctx.validateParamsObjectId()
+    const body = this.ctx.validateBody(this.rules.updateEmail)
+    const res = await this.service.user.updateUsernameOrEmailById(id, body)
+    if (res.success) {
+      ctx.success(res.data, '注册邮箱更新成功！')
+    } else {
+      ctx.fail('注册邮箱更新失败！')
+    }
   }
 
   // 重置密码步骤1: 验证用户省份，通过后，发送验证码到用户邮箱。
@@ -146,7 +163,6 @@ module.exports = class UserController extends Controller {
       ctx.fail(`验证码邮件发送失败（${data.email}）`)
     }
   }
-
   /**
    * @description 密码重置
    */
@@ -176,5 +192,39 @@ module.exports = class UserController extends Controller {
       ctx.fail('验证码错误，已过期！请重新开始。')
     }
     await this.service.resetpwd.deleteItemById(data._id)
+  }
+
+  /**
+   * @description 修改密码
+   */
+  async password() {
+    const { ctx } = this
+    const body = this.ctx.validateBody(this.rules.password)
+    const exist = await this.service.user.getItemById(ctx.session._user._id)
+    const vertifyPassword = this.app.utils.encode.bcompare(body.old, exist.password)
+    if (!vertifyPassword) {
+      return ctx.fail('原密码错误！')
+    }
+    const data = await this.service.user.updateItemById(ctx.session._user._id, {
+      password: this.app.utils.encode.bhash(body.password)
+    })
+    data
+      ? ctx.success('密码更新成功')
+      : ctx.fail('密码更新失败')
+  }
+
+  async checkAdmin() {
+    const { ctx } = this
+    ctx.validate(this.rules.checkAdmin, ctx.query)
+    const { userId, token } = ctx.query
+    let isAdmin = false
+    const verify = await this.app.verifyToken(token)
+    if (verify) {
+      const user = await this.service.user.getItemById(userId)
+      if (user.role === this.config.modelEnum.user.role.optional.ADMIN) {
+        isAdmin = true
+      }
+    }
+    ctx.success(isAdmin, '校验管理员成功')
   }
 }
