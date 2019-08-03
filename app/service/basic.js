@@ -74,7 +74,7 @@ module.exports = class BasicService extends Service {
   }
 
   updateItemById(id, data, opt, populate = []) {
-    opt = this.app.merge({
+    opt = this.app.merge(opt, {
       lean: true,
       new: true
     })

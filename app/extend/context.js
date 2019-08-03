@@ -12,10 +12,10 @@ module.exports = {
 //     }
 //     return result
 //   },
-//   validateParams(rules) {
-//     this.validate(rules, this.params)
-//     return this.params
-//   },
+  validateParams(rules) {
+    this.validate(rules, this.params)
+    return this.params
+  },
   validateBody(rules, body, dry = true) {
     if (typeof body === 'number') {
       dry = body
@@ -34,6 +34,14 @@ module.exports = {
         }, {})) ||
       body
     )
+  },
+  validateParamsObjectId() {
+    return this.validateParams({
+      id: {
+        type: 'objectId',
+        required: true
+      }
+    })
   },
   success(data = null, message) {
     const { codeMap } = this.app.config
@@ -68,29 +76,6 @@ module.exports = {
     this.status = code === -1 ? 200 : code
     this.body = body
   }
-//   validateParamsObjectId() {
-//     return this.validateParams({
-//       id: {
-//         type: 'objectId',
-//         required: true
-//       }
-//     })
-//   },
-//   validateCommentAuthor(author) {
-//     author = author || this.request.body.author
-//     const { isObjectId, isObject } = this.app.utils.validate
-//     if (isObject(author)) {
-//       this.validate(
-//         {
-//           name: 'string',
-//           email: 'string'
-//         },
-//         author
-//       )
-//     } else if (!isObjectId(author)) {
-//       this.throw(422, '发布人不存在')
-//     }
-//   },
 //   getCtxIp() {
 //     const req = this.req
 //     return (

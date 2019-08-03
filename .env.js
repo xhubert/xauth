@@ -7,7 +7,7 @@ module.exports = {
     secure: true, // true for 465, false for other ports
     auth: {
       user: 'no-reply@cloudybaylighting.net', // generated ethereal user
-      pass: 'cblMail123#' // generated ethereal password
+      pass: 'cblPwd123#' // generated ethereal password
     }
   }
 }

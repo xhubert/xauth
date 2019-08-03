@@ -8,5 +8,7 @@ module.exports = app => {
   userRouter.post('/users', controller.user.create)
   userRouter.post('/users/identify', controller.user.identify)
   userRouter.post('/users/resetpwd', controller.user.resetpwd)
-  userRouter.patch('/users/:id', auth, controller.user.update)
+  userRouter.patch('/users/:id/username', auth, controller.user.updateUsername)
+  userRouter.patch('/users/:id/email', auth, controller.user.updateEmail)
+  userRouter.patch('/users/password', auth, controller.user.password)
 }

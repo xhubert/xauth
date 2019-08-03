@@ -32,16 +32,16 @@ module.exports = class AuthController extends Controller {
     const body = this.ctx.validateBody(this.rules.login)
     const user = await this.service.user.getItem({ username: body.username })
     if (!user) {
-      return ctx.fail('用户名不存在！')
+      return ctx.fail('用户账户不存在！')
     }
     const vertifyPassword = this.app.utils.encode.bcompare(body.password, user.password)
     if (!vertifyPassword) {
-      return ctx.fail('用户名/密码错误！')
+      return ctx.fail('用户账户/密码错误！')
     }
     const token = this.service.auth.setCookie(user, true)
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     ctx.rotateCsrfSecret()
-    this.logger.info(`用户登录成功, ID：${user._id}，用户名：${user.username}`)
+    this.logger.info(`用户登录成功, ID：${user._id}，用户账户：${user.username}`)
     ctx.success({ id: user._id, token }, '登录成功')
   }
 
@@ -49,7 +49,7 @@ module.exports = class AuthController extends Controller {
     const { ctx } = this
     this.service.auth.setCookie(ctx.session._user, false)
     this.logger.info(
-      `用户退出成功, 用户ID：${ctx.session._user._id}，用户名：${ctx.session._user.username}`
+      `用户退出成功, 用户ID：${ctx.session._user._id}，用户账户：${ctx.session._user.username}`
     )
     ctx.success('退出成功')
   }
@@ -70,7 +70,7 @@ module.exports = class AuthController extends Controller {
       const conflict = await this.service.user.getItem({ username: body.username })
       if (conflict) {
         // 有冲突
-        return ctx.fail('用户名重复')
+        return ctx.fail('用户账户重复！')
       }
     }
     const update = this.app.merge({}, exist, body)

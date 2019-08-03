@@ -1,5 +1,5 @@
 const lodash = require('lodash')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const validator = require('validator')
 
 Object.keys(lodash).forEach(key => {
@@ -19,7 +19,7 @@ exports.isEmptyObject = obj => {
   return true
 }
 
-// exports.isObjectId = (str = '') => mongoose.Types.ObjectId.isValid(str)
+exports.isObjectId = (str = '') => mongoose.Types.ObjectId.isValid(str)
 
 Object.keys(validator).forEach(key => {
   exports[key] = function() {

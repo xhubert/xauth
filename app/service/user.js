@@ -27,16 +27,23 @@ module.exports = class UserService extends BasicService {
 
   // 创建用户
   async create(user, checkExist = true) {
-    const { username } = user
+    const { username, email } = user
     let msg = ''
     if (checkExist) {
-      const exist = await this.getItem({ username })
+      let exist = await this.getItem({ username })
       if (exist) {
-        msg = `用户名“${username}”已存在！`
+        msg = `用户账户“${username}”已存在！`
         return {
           success: false,
-          msg,
-          data: exist
+          msg
+        }
+      }
+      exist = await this.getItem({ email })
+      if (exist) {
+        msg = `注册邮箱“${email}”已存在！`
+        return {
+          success: false,
+          msg
         }
       }
     }
@@ -66,6 +73,47 @@ module.exports = class UserService extends BasicService {
       success: false,
       msg,
       data
+    }
+  }
+
+  // 更新用户
+  async updateUsernameOrEmailById(id, data) {
+    const opt = {
+      lean: true,
+      new: true,
+      select: 'username, email'
+    }
+    let exist = null
+    let msg = ''
+    if (data.username) {
+      exist = await this.getItem({ username: data.username })
+      if (exist) {
+        msg = `该用户帐号「${data.username}」已存在！`
+        return {
+          success: false,
+          msg
+        }
+      }
+    }
+    if (data.email) {
+      exist = await this.getItem({ email: data.email })
+      if (exist) {
+        msg = `该注册邮箱「${data.email}」已存在已存在！`
+        return {
+          success: false,
+          msg
+        }
+      }
+    }
+    const Q = await this.model.findByIdAndUpdate(id, data, opt).exec()
+    if (Q) {
+      return {
+        success: true,
+        data: Q
+      }
+    }
+    return {
+      success: false
     }
   }
 

@@ -12,12 +12,12 @@ module.exports = app => {
 }
 
 function addValidateRule(app) {
-//   app.validator.addRule('objectId', (rule, val) => {
-//     const valid = app.utils.validate.isObjectId(val)
-//     if (!valid) {
-//       return 'must be objectId'
-//     }
-//   })
+  app.validator.addRule('objectId', (rule, val) => {
+    const valid = app.utils.validate.isObjectId(val)
+    if (!valid) {
+      return 'must be objectId'
+    }
+  })
   app.validator.addRule('email', (rule, val) => {
     const valid = app.utils.validate.isEmail(val)
     if (!valid) {
