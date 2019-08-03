@@ -1,17 +1,17 @@
 module.exports = {
-//   processPayload(payload) {
-//     if (!payload) return null
-//     const result = {}
-//     for (const key in payload) {
-//       if (payload.hasOwnProperty(key)) {
-//         const value = payload[key]
-//         if (value !== undefined) {
-//           result[key] = value
-//         }
-//       }
-//     }
-//     return result
-//   },
+  processPayload(payload) {
+    if (!payload) return null
+    const result = {}
+    for (const key in payload) {
+      if (payload.hasOwnProperty(key)) {
+        const value = payload[key]
+        if (value !== undefined) {
+          result[key] = value
+        }
+      }
+    }
+    return result
+  },
   validateParams(rules) {
     this.validate(rules, this.params)
     return this.params
