@@ -12,9 +12,7 @@ module.exports = {
     schema.set('toObject', { getters: true, virtuals: false })
     schema.set('toJSON', { getters: true, virtuals: false })
     schema.add({
-      // 创建日期
       createdAt: { type: Date, default: Date.now },
-      // 更新日期
       updatedAt: { type: Date, default: Date.now }
     })
     if (options && options.paginate) {
