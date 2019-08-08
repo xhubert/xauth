@@ -10,5 +10,6 @@ module.exports = app => {
   userRouter.post('/users/resetpwd', controller.user.resetpwd)
   userRouter.patch('/users/:id/username', auth, controller.user.updateUsername)
   userRouter.patch('/users/:id/email', auth, controller.user.updateEmail)
+  userRouter.patch('/users/:id/avatar', auth, controller.user.updateAvatar)
   userRouter.patch('/users/password', auth, controller.user.password)
 }
