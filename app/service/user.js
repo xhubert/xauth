@@ -117,6 +117,24 @@ module.exports = class UserService extends BasicService {
     }
   }
 
+  async updateAvatarById(id, data) {
+    const opt = {
+      lean: true,
+      new: true,
+      select: 'username, email, avatar'
+    }
+    const Q = await this.model.findByIdAndUpdate(id, { avatar: data.avatar }, opt).exec()
+    if (Q) {
+      return {
+        success: true,
+        data: Q
+      }
+    }
+    return {
+      success: false
+    }
+  }
+
   /**
      * @description 评论用户创建或更新
      * @param {*} author 评论的author

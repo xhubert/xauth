@@ -34,6 +34,9 @@ module.exports = class UserController extends Controller {
       updateEmail: {
         email: { type: 'email', required: true }
       },
+      updateAvatar: {
+        avatar: { type: 'string', required: false }
+      },
       checkAdmin: {
         userId: { type: 'objectId', required: true },
         token: { type: 'string', required: true }
@@ -114,6 +117,18 @@ module.exports = class UserController extends Controller {
       ctx.success(res.data, '注册邮箱更新成功！')
     } else {
       ctx.fail('注册邮箱更新失败！')
+    }
+  }
+
+  async updateAvatar() {
+    const { ctx } = this
+    const { id } = ctx.validateParamsObjectId()
+    const body = this.ctx.validateBody(this.rules.updateAvatar)
+    const res = await this.service.user.updateAvatarById(id, body)
+    if (res.success) {
+      ctx.success(res.data, '用户头像更新成功！')
+    } else {
+      ctx.fail('用户头像更新失败！')
     }
   }
 

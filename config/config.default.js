@@ -73,15 +73,6 @@ module.exports = appInfo => {
   }
 
   config.mailer = env.mailer
-  // {
-  //   host: 'smtp.exmail.qq.com',
-  //   port: 465,
-  //   secure: true, // true for 465, false for other ports
-  //   auth: {
-  //     user: 'no-reply@cloudybaylighting.net', // generated ethereal user
-  //     pass: 'cblMail123#' // generated ethereal password
-  //   }
-  // }
 
   // 请求响应code
   config.codeMap = {
