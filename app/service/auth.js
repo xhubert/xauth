@@ -25,13 +25,28 @@ module.exports = class AuthService extends Service {
     const payload = {
       signed,
       domain,
-      maxAge:
-            isLogin ? maxAge : 0,
+      maxAge: isLogin ? maxAge : 0,
       httpOnly: false
     }
     this.ctx.cookies.set(key, token, payload)
     this.ctx.cookies.set(this.app.config.userCookieKey, user._id, payload)
     return token
+  }
+
+  clearCookies() {
+    const { key } = this.app.config.session
+    // const token = this.sign(this.app, {
+    //   id: user._id,
+    //   username: user.username
+    // })
+    // const payload = {
+    //   signed,
+    //   domain,
+    //   maxAge: isLogin ? maxAge : 0,
+    //   httpOnly: false
+    // }
+    this.ctx.cookies.set(key, null)
+    this.ctx.cookies.set(this.app.config.userCookieKey, null)
   }
 
   // 更新session

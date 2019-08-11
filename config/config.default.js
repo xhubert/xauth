@@ -30,7 +30,7 @@ module.exports = appInfo => {
 
   config.session = {
     key: `${appInfo.name}_token`,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 1, // 1 Day
     signed: true
   }
 

@@ -48,6 +48,7 @@ module.exports = class AuthController extends Controller {
   async logout() {
     const { ctx } = this
     this.service.auth.setCookie(ctx.session._user, false)
+    this.service.auth.clearCookies()
     this.logger.info(
       `用户退出成功, 用户ID：${ctx.session._user._id}，用户账户：${ctx.session._user.username}`
     )
