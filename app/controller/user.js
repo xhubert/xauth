@@ -167,11 +167,11 @@ module.exports = class UserController extends Controller {
     }
     try {
       await app.mailer.send({
-        from: '"No-Reply Big Seller 👻" <no-reply@cloudybaylighting.net>',
+        from: '"No-Reply@BigSeller 👻" <no-reply@cloudybaylighting.net>',
         to: data.email,
         subject: '你正在重置密码',
         text: `你重置密码的验证码为${res.data.code}，12小时后失效。`,
-        html: `<div>你重置密码的yan 鞥zh码为：</div><h2>${res.data.code}</h2><div>12小时后失效。</div>`
+        html: `<div>你重置密码的验证码为：</div><h2>${res.data.code}</h2><div>12小时后失效。</div>`
       })
       ctx.success(data, '用户详情获取成功')
     } catch (e) {
