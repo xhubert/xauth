@@ -175,6 +175,7 @@ module.exports = class UserController extends Controller {
       })
       ctx.success(data, '用户详情获取成功')
     } catch (e) {
+      this.logger.error(e)
       ctx.fail(`验证码邮件发送失败（${data.email}）`)
     }
   }
