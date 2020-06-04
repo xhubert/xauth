@@ -35,13 +35,13 @@ module.exports = appInfo => {
   }
 
   // add your middleware config here
-  config.middleware = [ 'errorHandler' ]
+  config.middleware = ['errorHandler']
   config.cors = {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS'
   }
 
   config.security = {
-    domainWhiteList: [ 'http://127.0.0.1', 'http://localhost' ],
+    domainWhiteList: ['http://127.0.0.1', 'http://localhost'],
     csrf: {
       cookieName: 'XSRF-TOKEN', // same to the default of axios.
       headerName: 'X-XSRF-TOKEN'
@@ -59,7 +59,8 @@ module.exports = appInfo => {
 
   // mongoose配置
   config.mongoose = {
-    url: 'mongodb://xauth:xauth@127.0.0.1:27017/xauth',
+    // url: 'mongodb://xauth:xauth@127.0.0.1:27017/xauth',
+    url: 'mongodb://xauth:xauth123@119.45.38.235:27017/xauth',
     options: {
       useNewUrlParser: true,
       poolSize: 20,
@@ -95,7 +96,8 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     userCookieKey: appInfo.name + '_userid',
-    defaultAvatar: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    defaultAvatar:
+      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     // myAppName: 'egg',
   }
   config.modelEnum = require('./enum.js').enum
