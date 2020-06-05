@@ -63,12 +63,13 @@ module.exports = appInfo => {
     url: 'mongodb://xauth:xauth123@119.45.38.235:27017/xauth',
     options: {
       useNewUrlParser: true,
+      useUnifiedTopology: true,
       poolSize: 20,
       keepAlive: true,
       useCreateIndex: true,
-      autoReconnect: true,
-      reconnectInterval: 1000,
-      reconnectTries: Number.MAX_VALUE,
+      // autoReconnect: true,
+      // reconnectInterval: 1000,
+      // reconnectTries: Number.MAX_VALUE,
       useFindAndModify: false
     }
   }
