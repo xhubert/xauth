@@ -1,6 +1,6 @@
 {
   "name": "xauth",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "xauth",
   "private": true,
   "dependencies": {
