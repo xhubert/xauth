@@ -18,11 +18,10 @@ module.exports = () => {
       poolSize: 20,
       keepAlive: true,
       useCreateIndex: true,
-      autoReconnect: true,
-      reconnectInterval: 1000,
-      reconnectTries: Number.MAX_VALUE,
-      useFindAndModify: false,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      // reconnectInterval: 1000,
+      // reconnectTries: Number.MAX_VALUE,
+      useFindAndModify: false
     }
   }
 
