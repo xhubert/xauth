@@ -9,13 +9,9 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
-  let env
-  try {
-    env = require('../.env')
-  } catch (e) {
-    if (e.code === 'MODULE_NOT_FOUND') {
-      throw new Error('请先在项目根目录增加环境配置文件‘.env.js’。')
-    }
+  const env = require('dotenv').config()
+  if (env.error) {
+    throw new Error('请先在项目根目录增加环境配置文件‘.env’。')
   }
 
   const config = {}
@@ -59,8 +55,7 @@ module.exports = appInfo => {
 
   // mongoose配置
   config.mongoose = {
-    // url: 'mongodb://xauth:xauth@127.0.0.1:27017/xauth',
-    url: 'mongodb://xauth:xauth123@119.45.38.235:27017/xauth',
+    url: `mongodb://xauth:${process.env.DB_PWD}@${process.env.DB_IP}:27017/xauth`,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -74,7 +69,15 @@ module.exports = appInfo => {
     }
   }
 
-  config.mailer = env.mailer
+  config.mailer = {
+    host: process.env.MAILER_HOST,
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.MAILER_USR, // generated ethereal user
+      pass: process.env.MAILER_PWD // generated ethereal password
+    }
+  },
 
   // 请求响应code
   config.codeMap = {

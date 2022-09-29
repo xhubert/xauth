@@ -15,6 +15,7 @@ module.exports = app => {
 
   require('./route/auth')(app)
   require('./route/user')(app)
+  require('./route/mail')(app)
   router.all('*', ctx => {
     const code = 404
     ctx.fail(code, app.config.codeMap[code])
