@@ -11,12 +11,11 @@ module.exports = class MailController extends Controller {
    */
   async verify() {
     const { app, ctx } = this
-    console.log(app.config.mailer)
     const transporter = nodemailer.createTransport({ ...app.config.mailer })
     try {
       const info = await transporter.sendMail({
-        from: '"NoReply@BigSeller 👻" <no-reply@cloudybay.net>',
-        to: 'xhubert.fan@gmail.com',
+        from: `"NoReply@BigSeller 👻" ${process.env.MAILER_NO_REPLY}`,
+        to: app.config.pkg.email,
         subject: '你正在重置密码',
         text: `你重置密码的验证码为，12小时后失效。`,
         html: `<div>你重置密码的验证码为：</div><h2>TEST</h2><div>12小时后失效。</div>`
@@ -29,7 +28,7 @@ module.exports = class MailController extends Controller {
       ctx.success('test', '用户详情获取成功')
     } catch (e) {
       this.logger.error(e)
-      ctx.fail(`验证码邮件发送失败）`)
+      ctx.fail('验证码邮件发送失败')
     }
   }
 }

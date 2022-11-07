@@ -1,5 +1,6 @@
 # xauth
 CB通用型鉴权服务器。
+inviteCode: `cld-bay`
 
 ## QuickStart
 
