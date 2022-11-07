@@ -1,6 +1,5 @@
 # xauth
-
-
+CB通用型鉴权服务器。
 
 ## QuickStart
 

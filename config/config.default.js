@@ -71,7 +71,7 @@ module.exports = appInfo => {
 
   config.mailer = {
     host: process.env.MAILER_HOST,
-    port: 587,
+    port: process.env.MAILER_PORT,
     secure: false, // true for 465, false for other ports
     auth: {
       user: process.env.MAILER_USR, // generated ethereal user
