@@ -13,10 +13,11 @@ module.exports = class UserService extends BasicService {
      * @description 创建管理员，用于server初始化时
      */
   async seed() {
-    const ADMIN = this.config.modelEnum.user.role.optional.ADMIN
+    const { app } = this
+    const ADMIN = app.config.modelEnum.user.role.optional.ADMIN
     let admin = await this.service.user.getItem({ role: ADMIN })
     if (!admin) {
-      const defaultAdmin = this.config.defaultAdmin
+      const defaultAdmin = app.config.defaultAdmin
       admin = await this.create(Object.assign({}, defaultAdmin, {
         role: ADMIN
       }))
@@ -186,7 +187,7 @@ module.exports = class UserService extends BasicService {
         } else {
           // 创建
           user = await this.create(Object.assign(update, {
-            role: this.config.modelEnum.user.role.optional.NORMAL
+            role: this.app.config.modelEnum.user.role.optional.NORMAL
           }), false)
           if (user) {
             this.service.notification.recordUser(user, 'create')

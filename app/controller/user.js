@@ -4,12 +4,13 @@
 
 const { Controller } = require('egg')
 const moment = require('moment')
+const nodemailer = require('nodemailer')
 
 module.exports = class UserController extends Controller {
   get rules() {
     const {
       role
-    } = this.config.modelEnum.user
+    } = this.app.config.modelEnum.user
     return {
       create: {
         inviteCode: { type: 'string', required: true },
@@ -165,9 +166,10 @@ module.exports = class UserController extends Controller {
     if (!res.success) {
       return ctx.fail('生成Code失败！')
     }
+    const transporter = nodemailer.createTransport({ ...app.config.mailer })
     try {
-      await app.mailer.send({
-        from: '"No-Reply@BigSeller 👻" <no-reply@cloudybaylighting.net>',
+      await transporter.sendMail({
+        from: `"No-Reply@BigSeller 👻" <${process.env.MAILER_NO_REPLY}>`,
         to: data.email,
         subject: '你正在重置密码',
         text: `你重置密码的验证码为${res.data.code}，12小时后失效。`,
@@ -230,14 +232,14 @@ module.exports = class UserController extends Controller {
   }
 
   async checkAdmin() {
-    const { ctx } = this
+    const { app, ctx } = this
     ctx.validate(this.rules.checkAdmin, ctx.query)
     const { userId, token } = ctx.query
     let isAdmin = false
     const verify = await this.app.verifyToken(token)
     if (verify) {
       const user = await this.service.user.getItemById(userId)
-      if (user.role === this.config.modelEnum.user.role.optional.ADMIN) {
+      if (user.role === app.config.modelEnum.user.role.optional.ADMIN) {
         isAdmin = true
       }
     }
