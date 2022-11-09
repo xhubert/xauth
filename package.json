@@ -1,6 +1,6 @@
 {
   "name": "xauth",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "xauth",
   "private": true,
   "dependencies": {
@@ -31,7 +31,7 @@
     "eslint-config-egg": "^12"
   },
   "engines": {
-    "node": ">=8.9.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-xauth --port 7007",
