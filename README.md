@@ -31,7 +31,8 @@ $ npm stop
 
 
 ### Database
-username: xxx
-password: xxx123
-ip: 127.0.0.1
-replicaSet: cbbs-rs0
+- username: xxx
+- password: xxx123
+- ip: 127.0.0.1
+- hostname: mongo-rs0-1
+- replicaSet: rs0
