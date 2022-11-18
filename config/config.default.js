@@ -55,17 +55,14 @@ module.exports = appInfo => {
 
   // mongoose配置
   config.mongoose = {
-    url: `mongodb://xauth:${process.env.DB_PWD}@${process.env.DB_IP}:27017/xauth`,
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      poolSize: 20,
-      keepAlive: true,
-      useCreateIndex: true,
-      // autoReconnect: true,
-      // reconnectInterval: 1000,
-      // reconnectTries: Number.MAX_VALUE,
-      useFindAndModify: false
+    client: {
+      url: `mongodb://xauth:${process.env.DB_PWD}@${process.env.DB_HOST}:27017,${process.env.DB_HOST}:27018,${process.env.DB_HOST}:27019/${process.env.DB_NAME}?replicaSet=${process.env.DB_RS}`,
+      options: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        keepAlive: true,
+        connectTimeoutMS: 1000
+      }
     }
   }
 
@@ -77,8 +74,7 @@ module.exports = appInfo => {
       user: process.env.MAILER_USR, // generated ethereal user
       pass: process.env.MAILER_PWD // generated ethereal password
     }
-  },
-
+  }
   // 请求响应code
   config.codeMap = {
     '-1': '请求失败',
