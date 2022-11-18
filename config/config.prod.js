@@ -9,11 +9,7 @@ module.exports = () => {
       // path: '/var/run/egg.sock',
     }
   }
-  // mongoose配置
-  config.mongoose = {
-    url: `mongodb://xauth:${process.env.DB_PWD}@${process.env.DB_HOST}:27017,${process.env.DB_HOST}:27018,${process.env.DB_HOST}:27019/${process.env.DB_NAME}?replicaSet=${process.env.DB_RS}`
-  }
-
+  
   config.console = {
     debug: false,
     error: false
